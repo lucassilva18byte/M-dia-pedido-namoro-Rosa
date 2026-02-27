@@ -2,14 +2,14 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Rosa Romântico Intenso 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pedido Especial 💖</title>
 
 <style>
 :root{
   --cor1:#ff4e88;
   --cor2:#ff99c8;
   --cor3:#ffc2d1;
-  --texto:#ffffff;
 }
 
 *{
@@ -26,14 +26,14 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  color:var(--texto);
+  color:white;
 }
 
 /* PARTICULAS */
 .particulas span{
   position:absolute;
-  width:5px;
-  height:5px;
+  width:4px;
+  height:4px;
   background:white;
   border-radius:50%;
   opacity:0.3;
@@ -48,23 +48,24 @@ body{
 /* CORAÇÕES */
 .coracao{
   position:absolute;
-  color:#fff;
+  color:white;
   animation:flutuar linear infinite;
   opacity:0.6;
-  text-shadow:0 0 10px #fff;
+  text-shadow:0 0 10px white;
 }
 
 @keyframes flutuar{
   from{transform:translateY(100vh) scale(1);}
-  to{transform:translateY(-10vh) scale(1.5);}
+  to{transform:translateY(-10vh) scale(1.4);}
 }
 
 /* CARTA */
 .card{
   background:rgba(255,255,255,0.15);
   backdrop-filter:blur(15px);
-  padding:70px;
-  width:650px;
+  padding:50px;
+  width:90%;
+  max-width:650px;
   border-radius:25px;
   border:2px solid rgba(255,255,255,0.6);
   box-shadow:
@@ -72,6 +73,7 @@ body{
     0 20px 60px rgba(0,0,0,0.4);
   text-align:center;
   animation:entrar 1.5s ease;
+  position:relative;
 }
 
 @keyframes entrar{
@@ -80,34 +82,51 @@ body{
 }
 
 h1{
-  margin-bottom:35px;
-  font-size:30px;
-  text-shadow:0 0 10px rgba(255,255,255,0.6);
+  margin-bottom:25px;
+  font-size:24px;
 }
 
-/* TEXTO */
 .texto{
-  font-size:20px;
+  font-size:18px;
   min-height:120px;
-  white-space:pre-line;
+  margin-bottom:25px;
+  line-height:1.6;
 }
 
 button{
-  margin-top:35px;
-  padding:14px 35px;
+  padding:12px 28px;
   border:none;
   border-radius:30px;
   cursor:pointer;
   font-weight:bold;
-  background:white;
-  color:#e11d48;
-  font-size:15px;
+  margin:10px;
   transition:0.3s;
-  box-shadow:0 5px 20px rgba(0,0,0,0.3);
 }
 
-button:hover{
+.sim{
+  background:white;
+  color:#e11d48;
+}
+
+.sim:hover{
   transform:scale(1.1);
+}
+
+.nao{
+  background:#ffffff40;
+  color:white;
+  position:relative;
+}
+
+.final{
+  font-size:22px;
+  margin-top:20px;
+  animation:fadeIn 1.5s ease forwards;
+  opacity:0;
+}
+
+@keyframes fadeIn{
+  to{opacity:1;}
 }
 </style>
 </head>
@@ -118,9 +137,12 @@ button:hover{
 <div id="coracoes"></div>
 
 <div class="card">
-  <h1>Para o Amor da Minha Vida 💖</h1>
+  <h1>Eu preciso te perguntar algo 💖</h1>
   <div class="texto" id="texto"></div>
-  <button onclick="proximaFrase()">Continuar 💕</button>
+  <div id="botoes">
+    <button id="continuar" onclick="proximaFrase()" class="sim">Continuar 💕</button>
+  </div>
+  <div id="finalMsg"></div>
 </div>
 
 <script>
@@ -134,9 +156,9 @@ for(let i=0;i<50;i++){
   particulas.appendChild(span);
 }
 
-/* CORAÇÕES */
+/* CORAÇÕES FLUTUANDO */
 const areaCoracoes=document.getElementById("coracoes");
-setInterval(()=>{
+function gerarCoracao(){
   let heart=document.createElement("div");
   heart.classList.add("coracao");
   heart.innerHTML="❤";
@@ -145,40 +167,76 @@ setInterval(()=>{
   heart.style.animationDuration=(6+Math.random()*5)+"s";
   areaCoracoes.appendChild(heart);
   setTimeout(()=>heart.remove(),9000);
-},700);
+}
+setInterval(gerarCoracao,700);
 
 /* FRASES */
 const frases=[
-"Desde que você entrou na minha vida...",
-"Tudo ficou mais leve.",
-"Seu sorriso virou meu lugar favorito.",
-"E meu coração escolheu você todos os dias."
+"Desde que você apareceu...",
+"Meu mundo ficou diferente.",
+"Cada momento ao seu lado virou especial.",
+"E meu coração já fez a escolha dele..."
 ];
 
-let index=0;
-let char=0;
-let escrevendo=false;
-const texto=document.getElementById("texto");
+let index = 0;
+let escrevendo = false;
+const texto = document.getElementById("texto");
+const continuarBtn = document.getElementById("continuar");
+const botoes = document.getElementById("botoes");
+const finalMsg = document.getElementById("finalMsg");
 
-function digitar(){
-  if(char < frases[index].length){
-    texto.innerHTML += frases[index].charAt(char);
-    char++;
-    setTimeout(digitar,35);
-  }else{
-    escrevendo=false;
-  }
+function digitarFrase(frase){
+    escrevendo = true;
+    texto.innerHTML = "";
+    let char = 0;
+
+    function escrever(){
+        if(char < frase.length){
+            texto.innerHTML += frase.charAt(char);
+            char++;
+            setTimeout(escrever, 35);
+        } else {
+            escrevendo = false;
+        }
+    }
+
+    escrever();
 }
 
 function proximaFrase(){
-  if(escrevendo) return;
-  if(index < frases.length){
-    texto.innerHTML="";
-    char=0;
-    escrevendo=true;
-    digitar();
-    index++;
-  }
+    if(escrevendo) return;
+
+    if(index < frases.length){
+        digitarFrase(frases[index]);
+        index++;
+    } else {
+        mostrarPedido();
+    }
+}
+
+function mostrarPedido(){
+    texto.innerHTML = "Você aceita namorar comigo? 💍💖";
+    continuarBtn.style.display="none";
+
+    botoes.innerHTML = `
+        <button class="sim" onclick="aceitou()">SIM 💖</button>
+        <button class="nao" onmouseover="fugir(this)">NÃO 😅</button>
+    `;
+}
+
+function fugir(btn){
+    btn.style.position="absolute";
+    btn.style.top=Math.random()*200+"px";
+    btn.style.left=Math.random()*200+"px";
+}
+
+function aceitou(){
+    botoes.style.display="none";
+    finalMsg.innerHTML="<div class='final'>Agora é oficial 💍💖<br>Você é minha namorada!</div>";
+    
+    for(let i=0;i<30;i++){
+        setTimeout(gerarCoracao, i*100);
+    }
 }
 
 </script>
