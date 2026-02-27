@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Rosa Romântico Intenso 💖</title>
+
+<style>
+:root{
+  --cor1:#ff4e88;
+  --cor2:#ff99c8;
+  --cor3:#ffc2d1;
+  --texto:#ffffff;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Georgia', serif;
+}
+
+body{
+  height:100vh;
+  overflow:hidden;
+  background:linear-gradient(135deg,var(--cor1),var(--cor2),var(--cor3));
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:var(--texto);
+}
+
+/* PARTICULAS */
+.particulas span{
+  position:absolute;
+  width:5px;
+  height:5px;
+  background:white;
+  border-radius:50%;
+  opacity:0.3;
+  animation:subir linear infinite;
+}
+
+@keyframes subir{
+  from{transform:translateY(100vh);}
+  to{transform:translateY(-10vh);}
+}
+
+/* CORAÇÕES */
+.coracao{
+  position:absolute;
+  color:#fff;
+  animation:flutuar linear infinite;
+  opacity:0.6;
+  text-shadow:0 0 10px #fff;
+}
+
+@keyframes flutuar{
+  from{transform:translateY(100vh) scale(1);}
+  to{transform:translateY(-10vh) scale(1.5);}
+}
+
+/* CARTA */
+.card{
+  background:rgba(255,255,255,0.15);
+  backdrop-filter:blur(15px);
+  padding:70px;
+  width:650px;
+  border-radius:25px;
+  border:2px solid rgba(255,255,255,0.6);
+  box-shadow:
+    0 0 30px rgba(255,255,255,0.4),
+    0 20px 60px rgba(0,0,0,0.4);
+  text-align:center;
+  animation:entrar 1.5s ease;
+}
+
+@keyframes entrar{
+  from{opacity:0; transform:translateY(60px) scale(0.85);}
+  to{opacity:1; transform:translateY(0) scale(1);}
+}
+
+h1{
+  margin-bottom:35px;
+  font-size:30px;
+  text-shadow:0 0 10px rgba(255,255,255,0.6);
+}
+
+/* TEXTO */
+.texto{
+  font-size:20px;
+  min-height:120px;
+  white-space:pre-line;
+}
+
+button{
+  margin-top:35px;
+  padding:14px 35px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  font-weight:bold;
+  background:white;
+  color:#e11d48;
+  font-size:15px;
+  transition:0.3s;
+  box-shadow:0 5px 20px rgba(0,0,0,0.3);
+}
+
+button:hover{
+  transform:scale(1.1);
+}
+</style>
+</head>
+
+<body>
+
+<div class="particulas"></div>
+<div id="coracoes"></div>
+
+<div class="card">
+  <h1>Para o Amor da Minha Vida 💖</h1>
+  <div class="texto" id="texto"></div>
+  <button onclick="proximaFrase()">Continuar 💕</button>
+</div>
+
+<script>
+
+/* PARTICULAS */
+const particulas = document.querySelector(".particulas");
+for(let i=0;i<50;i++){
+  let span=document.createElement("span");
+  span.style.left=Math.random()*100+"vw";
+  span.style.animationDuration=(6+Math.random()*6)+"s";
+  particulas.appendChild(span);
+}
+
+/* CORAÇÕES */
+const areaCoracoes=document.getElementById("coracoes");
+setInterval(()=>{
+  let heart=document.createElement("div");
+  heart.classList.add("coracao");
+  heart.innerHTML="❤";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.fontSize=(18+Math.random()*25)+"px";
+  heart.style.animationDuration=(6+Math.random()*5)+"s";
+  areaCoracoes.appendChild(heart);
+  setTimeout(()=>heart.remove(),9000);
+},700);
+
+/* FRASES */
+const frases=[
+"Desde que você entrou na minha vida...",
+"Tudo ficou mais leve.",
+"Seu sorriso virou meu lugar favorito.",
+"E meu coração escolheu você todos os dias."
+];
+
+let index=0;
+let char=0;
+let escrevendo=false;
+const texto=document.getElementById("texto");
+
+function digitar(){
+  if(char < frases[index].length){
+    texto.innerHTML += frases[index].charAt(char);
+    char++;
+    setTimeout(digitar,35);
+  }else{
+    escrevendo=false;
+  }
+}
+
+function proximaFrase(){
+  if(escrevendo) return;
+  if(index < frases.length){
+    texto.innerHTML="";
+    char=0;
+    escrevendo=true;
+    digitar();
+    index++;
+  }
+}
+
+</script>
+
+</body>
+</html>
